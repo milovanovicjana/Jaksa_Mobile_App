@@ -1,3 +1,14 @@
 <resources>
-    <string name="app_name">JaksaApp</string>
+    <string name="app_name">JAKSA</string>
+    <string name="phone_number">"+381 637008595"</string>
+    <string name="login">"Logovanje"</string>
+    <string name="registration">"Registracija"</string>
+    <string name="my_profile">"Moj profil"</string>
+    <string name="logout">"Odjava"</string>
+
+    <!--Home screen text-->
+    <string name="home_screen_title">"Naučite matematiku sa lakoćom!"</string>
+    <string name="home_screen_school_description">"Prijavite se što pre i otkrijte zanimljivi svet brojeva bez muke! Sa svojim iskustvom i pedagoškim veštinama sam tu da vas naučim da savladate svo potrebno gradivo."</string>
+    <string name="home_screen_name">"Škola matematike JAKŠA"</string>
+
 </resources>

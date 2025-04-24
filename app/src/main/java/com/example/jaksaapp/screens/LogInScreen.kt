@@ -29,7 +29,7 @@ import com.example.jaksaapp.ui.theme.Cream
 import com.example.jaksaapp.ui.theme.Green1
 
 @Composable
-fun LogInScreen(isLoggedIn: Boolean, navHostController: NavHostController) {
+fun LogInScreen(isLoggedIn: Boolean, navHostController: NavHostController, onLoginSuccess: () -> Unit) {
     val context = LocalContext.current
 
     Scaffold(
@@ -41,10 +41,10 @@ fun LogInScreen(isLoggedIn: Boolean, navHostController: NavHostController) {
                 modifier = Modifier
                     .padding(it)
                     .fillMaxSize()
-                    .background(Cream).padding(10.dp).verticalScroll(
+                    .background(Cream).padding(vertical = 10.dp, horizontal = 40.dp).verticalScroll(
                         rememberScrollState()
                     ),
-                horizontalAlignment = Alignment.Start
+                horizontalAlignment = Alignment.CenterHorizontally
 
             ) {
                 Spacer(modifier = Modifier.height(40.dp))
@@ -67,7 +67,7 @@ fun LogInScreen(isLoggedIn: Boolean, navHostController: NavHostController) {
                     modifier = Modifier.align(Alignment.CenterHorizontally)
                 )
 
-                var user_name by remember { mutableStateOf("") }
+                var userName by remember { mutableStateOf("") }
                 var password by remember { mutableStateOf("") }
                 var isPasswordVisible by remember { mutableStateOf(false) }
 
@@ -75,9 +75,9 @@ fun LogInScreen(isLoggedIn: Boolean, navHostController: NavHostController) {
 
                 CustomInputField(
                     focusManager,
-                    value = user_name,
+                    value = userName,
                     label = context.getString(R.string.user_name),
-                    onValueChange = { user_name = it },
+                    onValueChange = { userName = it },
                     modifier = Modifier.fillMaxWidth()
                 )
                 CustomPasswordInputField(
@@ -91,6 +91,7 @@ fun LogInScreen(isLoggedIn: Boolean, navHostController: NavHostController) {
                 )
 
                 CustomButton(text = context.getString(R.string.login_button), onClick = {
+                    onLoginSuccess()
                     navHostController.navigate(com.example.jaksaapp.HomeScreen.route) {
                         popUpTo(0)
                     }

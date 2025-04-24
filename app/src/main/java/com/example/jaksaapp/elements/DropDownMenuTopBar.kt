@@ -25,23 +25,38 @@ fun DropdownMenuTopBar(expanded: MutableState<Boolean>, isLoggedIn: Boolean, nav
     val currentBackStackEntry by navHostController.currentBackStackEntryAsState()
     val currentRoute = currentBackStackEntry?.destination?.route ?: HomeScreen.route
 
+    val homePageButtonText = context.getString(R.string.home_page)
+    val requestsButtonText = context.getString(R.string.requests_page)
+    val timetableButtonText = context.getString(R.string.timetable_page)
+    val aboutMeButtonText = context.getString(R.string.about_me)
+    val myProfileButtonText = context.getString(R.string.my_profile)
+    val logOutButtonText = context.getString(R.string.logout)
+    val contactButtonText = context.getString(R.string.contact)
+    val loginButtonText = context.getString(R.string.login)
+    val registrationButtonText = context.getString(R.string.registration)
+
     var dropdownMenuItems: List<String>
     var dropdownItemDestinations: List<Destination>
     if (isLoggedIn) {
-        val myProfileButtonText = context.getString(R.string.my_profile)
-        val logOutButtonText = context.getString(R.string.logout)
-        dropdownMenuItems = listOf(myProfileButtonText, logOutButtonText)
+        dropdownMenuItems = listOf(
+            homePageButtonText,
+            aboutMeButtonText,
+            contactButtonText,
+            requestsButtonText,
+            timetableButtonText,
+            myProfileButtonText,
+            logOutButtonText
+        )
         dropdownItemDestinations = listOf(
+            AboutMeScreen,
+            AboutMeScreen,
+            AboutMeScreen,
+            AboutMeScreen,
+            AboutMeScreen,
             AboutMeScreen,
             AboutMeScreen
         )
     } else {
-        val homePageButtonText = context.getString(R.string.home_page)
-        val aboutMeButtonText = context.getString(R.string.about_me)
-        val contactButtonText = context.getString(R.string.contact)
-
-        val loginButtonText = context.getString(R.string.login)
-        val registrationButtonText = context.getString(R.string.registration)
         dropdownMenuItems = listOf(homePageButtonText, aboutMeButtonText, contactButtonText, loginButtonText, registrationButtonText)
         dropdownItemDestinations = listOf(
             HomeScreen,

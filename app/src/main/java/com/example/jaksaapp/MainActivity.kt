@@ -26,27 +26,27 @@ class MainActivity : ComponentActivity() {
         setContent {
             JaksaAppTheme {
                 val navController = rememberAnimatedNavController()
-                val startRoute by remember { mutableStateOf(LogInScreen.route) }
-                val isLoggedIn = false
+                val startRoute by remember { mutableStateOf(RegistrationScreen.route) }
+                val isLoggedIn = remember { mutableStateOf(false) }
 
                 AnimatedNavHost(
                     navController = navController,
                     startDestination = startRoute
                 ) {
                     composable(route = HomeScreen.route) {
-                        HomeScreen(isLoggedIn, navController)
+                        HomeScreen(isLoggedIn.value, navController)
                     }
                     composable(route = AboutMeScreen.route) {
-                        AboutMeScreen(isLoggedIn, navController)
+                        AboutMeScreen(isLoggedIn.value, navController)
                     }
                     composable(route = LogInScreen.route) {
-                        LogInScreen(isLoggedIn, navController)
+                        LogInScreen(isLoggedIn.value, navController) { isLoggedIn.value = true }
                     }
                     composable(route = RegistrationScreen.route) {
-                        RegistrationScreen(isLoggedIn, navController)
+                        RegistrationScreen(isLoggedIn.value, navController)
                     }
                     composable(route = ContactScreen.route) {
-                        ContactScreen(isLoggedIn, navController)
+                        ContactScreen(isLoggedIn.value, navController)
                     }
                 }
             }

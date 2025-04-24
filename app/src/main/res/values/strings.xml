@@ -7,6 +7,8 @@
     <string name="logout">"Odjava"</string>
     <string name="about_me">"O meni"</string>
     <string name="home_page">"Početna"</string>
+    <string name="requests_page">"Zahtevi"</string>
+    <string name="timetable_page">"Raspored casova"</string>
 
     <!--Home screen text-->
     <string name="home_screen_title">"Naučite matematiku sa lakoćom!"</string>
@@ -30,9 +32,9 @@
     <string name="education_bullet_4">"Iskustvo: 34 godine uspesnog rada u sopstvenoj skoli matematike"</string>
 
     <string name="contact">"Kontakt"</string>
-    <string name="email_label">"Imejl adresa:"</string>
+    <string name="email_label">"Imejl adresa"</string>
     <string name="email_value">"jaksa.vuk@gmail.com"</string>
-    <string name="phone_number_label">"Telefon:"</string>
+    <string name="phone_number_label">"Telefon"</string>
     <string name="phone_number_value">"+381 637008595"</string>
     <string name="address_label">"Adresa:"</string>
     <string name="address_value">"Bul. Despota Stefana 45"</string>
@@ -46,4 +48,6 @@
     <string name="password">"Lozinka"</string>
     <string name="login_button">"Uloguj se"</string>
 
+    <!--Registration text-->
+    <string name="registration_button">"Registruj se"</string>
 </resources>

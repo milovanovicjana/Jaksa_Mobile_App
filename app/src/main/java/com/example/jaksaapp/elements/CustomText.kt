@@ -19,7 +19,8 @@ fun CustomText(
     fontWeight: FontWeight = FontWeight.Bold,
     textAlign: TextAlign = TextAlign.Justify,
     padding: Dp = 20.dp,
-    color: Color = Color.Black
+    color: Color = Color.Black,
+    modifier: Modifier = Modifier
 ) {
     Text(
         text = text,
@@ -29,6 +30,6 @@ fun CustomText(
             textAlign = textAlign
         ),
         color = color,
-        modifier = Modifier.padding(padding)
+        modifier = modifier.padding(padding)
     )
 }

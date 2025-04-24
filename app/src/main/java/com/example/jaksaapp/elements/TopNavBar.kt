@@ -1,6 +1,9 @@
 package com.example.jaksaapp.elements
 
 import DropdownMenuTopBar
+import android.content.Intent
+import android.net.Uri
+import android.widget.Toast
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
@@ -67,7 +70,18 @@ fun TopNavBar(isLoggedIn: Boolean, navHostController: NavHostController) {
                     style = TextStyle(
                         fontSize = 19.sp,
                         fontWeight = FontWeight.Bold
-                    )
+                    ),
+                    modifier = Modifier.clickable {
+                        val u = Uri.parse("tel:$phoneNumber")
+                        val i = Intent(Intent.ACTION_DIAL, u)
+                        try {
+                            context.startActivity(i)
+                        } catch (s: SecurityException) {
+                            Toast
+                                .makeText(context, "An error has occurred!", Toast.LENGTH_LONG)
+                                .show()
+                        }
+                    }
                 )
                 Spacer(modifier = Modifier.weight(1f))
             }

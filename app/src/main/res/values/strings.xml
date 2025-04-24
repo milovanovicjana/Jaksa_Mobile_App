@@ -5,10 +5,39 @@
     <string name="registration">"Registracija"</string>
     <string name="my_profile">"Moj profil"</string>
     <string name="logout">"Odjava"</string>
+    <string name="about_me">"O meni"</string>
+    <string name="home_page">"Početna"</string>
 
     <!--Home screen text-->
     <string name="home_screen_title">"Naučite matematiku sa lakoćom!"</string>
     <string name="home_screen_school_description">"Prijavite se što pre i otkrijte zanimljivi svet brojeva bez muke! Sa svojim iskustvom i pedagoškim veštinama sam tu da vas naučim da savladate svo potrebno gradivo."</string>
     <string name="home_screen_name">"Škola matematike JAKŠA"</string>
 
+    <!--About me text-->
+    <string name="about_me_title_1">"O meni"</string>
+    <string name="about_me_text">"Zovem se Jaksa Vukasinovic i strastveni sam profesor matematike sa više od 30 godina iskustvom u podučavanju učenika i studenata različitih uzrasta! Moj cilj je da približim matematiku svakom učeniku na način koji je zanimljiv, logičan i primenljiv."</string>
+
+    <string name="about_me_title_2">"Metodologija rada"</string>
+    <string name="about_me_methods">"Verujem da je matematika ključ za razvijanje kritičkog mišljenja i rešavanje problema. Trudim se da:"</string>
+    <string name="method_bullet_1">"Povezujem teoriju sa realnim svetom kako bi učenici razumeli praktičnu primenu matematike."</string>
+    <string name="method_bullet_2">"Kroz kreativne zadatke i primere probudim znatiželju i interesovanje za ovu nauku."</string>
+    <string name="method_bullet_3">"Prilagodim nastavu potrebama svakog učenika."</string>
+
+    <string name="about_me_title_3">"Edukacija i iskustvo"</string>
+    <string name="education_bullet_1">"Diploma: dipl. gradjevinski inzenjer"</string>
+    <string name="education_bullet_2">"Fakultet: Gradjevinski fakultet, Univerzitet u Beogradu"</string>
+    <string name="education_bullet_3">"Specijalizacija: Algebra, geometrija, statistika"</string>
+    <string name="education_bullet_4">"Iskustvo: 34 godine uspesnog rada u sopstvenoj skoli matematike"</string>
+
+    <string name="contact">"Kontakt"</string>
+    <string name="email_label">"Imejl adresa:"</string>
+    <string name="email_value">"jaksa.vuk@gmail.com"</string>
+    <string name="phone_number_label">"Telefon:"</string>
+    <string name="phone_number_value">"+381 637008595"</string>
+    <string name="address_label">"Adresa:"</string>
+    <string name="address_value">"Bul. Despota Stefana 45"</string>
+    <string name="name">"Ime:"</string>
+    <string name="surname">"Prezime:"</string>
+    <string name="text">"Tekst:"</string>
+    <string name="send_button">"Posalji"</string>
 </resources>

@@ -41,6 +41,14 @@ android {
 }
 
 dependencies {
+    // Navigation
+    implementation(libs.androidx.navigation.compose.v240alpha10)
+
+    implementation(libs.google.accompanist.navigation.animation.v0313beta)
+
+    // Image slider
+    implementation(libs.accompanist.pager)
+    implementation(libs.accompanist.pager.indicators)
 
     implementation(libs.androidx.core.ktx)
     implementation(libs.androidx.lifecycle.runtime.ktx)

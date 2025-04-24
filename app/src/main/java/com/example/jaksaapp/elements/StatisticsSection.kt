@@ -9,13 +9,11 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.material3.Icon
-import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.painterResource
-import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
@@ -78,22 +76,13 @@ fun StatisticSection() {
                             },
                         tint = Color.White
                     )
-                    Text(
-                        statisticElements[index].value,
-                        style = TextStyle(
-                            fontSize = 19.sp,
-                            fontWeight = FontWeight.Bold
-                        ),
-                        color = Color.White,
-                        modifier = Modifier.padding(5.dp)
-                    )
-                    Text(
-                        statisticElements[index].label,
-                        style = TextStyle(
-                            fontSize = 13.sp
-                        ),
-                        color = Color.White,
-                        modifier = Modifier.padding(5.dp)
+                    CustomText(text = statisticElements[index].value, padding = 5.dp, color = Color.White)
+                    CustomText(
+                        text = statisticElements[index].label,
+                        fontSize = 13.sp,
+                        fontWeight = FontWeight.Normal,
+                        padding = 5.dp,
+                        color = Color.White
                     )
                 }
             }

@@ -26,12 +26,13 @@ import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import androidx.navigation.NavHostController
 import com.example.jaksaapp.R
 import com.example.jaksaapp.ui.theme.BrownNavbar
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun TopNavBar(isLoggedIn: Boolean) {
+fun TopNavBar(isLoggedIn: Boolean, navHostController: NavHostController) {
     val expanded = remember { mutableStateOf(false) }
     val context = LocalContext.current
 
@@ -80,7 +81,7 @@ fun TopNavBar(isLoggedIn: Boolean) {
                     .clickable { expanded.value = true },
                 tint = Color.White
             )
-            DropdownMenuTopBar(expanded, isLoggedIn)
+            DropdownMenuTopBar(expanded, isLoggedIn, navHostController)
         },
         colors = TopAppBarDefaults.smallTopAppBarColors(
             containerColor = BrownNavbar,

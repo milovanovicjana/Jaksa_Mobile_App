@@ -1,5 +1,9 @@
 [versions]
+accompanistNavigationAnimation = "0.21.1-beta"
+accompanistPagerIndicators = "0.36.0"
 agp = "8.8.0"
+androidxNavigationCompose = "2.4.0-alpha10"
+googleAccompanistNavigationAnimation = "0.31.3-beta"
 kotlin = "2.0.0"
 coreKtx = "1.10.1"
 junit = "4.13.2"
@@ -8,9 +12,18 @@ espressoCore = "3.5.1"
 lifecycleRuntimeKtx = "2.6.1"
 activityCompose = "1.8.0"
 composeBom = "2024.04.01"
+navigationCompose = "2.8.9"
+navigationComposeVersion = "2.6.0-alpha04"
 
 [libraries]
+accompanist-navigation-animation = { module = "com.google.accompanist:accompanist-navigation-animation", version.ref = "accompanistNavigationAnimation" }
+accompanist-pager = { module = "com.google.accompanist:accompanist-pager", version.ref = "accompanistPagerIndicators" }
+accompanist-pager-indicators = { module = "com.google.accompanist:accompanist-pager-indicators", version.ref = "accompanistPagerIndicators" }
 androidx-core-ktx = { group = "androidx.core", name = "core-ktx", version.ref = "coreKtx" }
+androidx-navigation-compose = { module = "androidx.navigation:navigation-compose", version.ref = "navigationCompose" }
+androidx-navigation-compose-v240alpha10 = { module = "androidx.navigation:navigation-compose", version.ref = "androidxNavigationCompose" }
+androidx-navigation-compose-v260alpha04 = { module = "androidx.navigation:navigation-compose", version.ref = "navigationComposeVersion" }
+google-accompanist-navigation-animation-v0313beta = { module = "com.google.accompanist:accompanist-navigation-animation", version.ref = "googleAccompanistNavigationAnimation" }
 junit = { group = "junit", name = "junit", version.ref = "junit" }
 androidx-junit = { group = "androidx.test.ext", name = "junit", version.ref = "junitVersion" }
 androidx-espresso-core = { group = "androidx.test.espresso", name = "espresso-core", version.ref = "espressoCore" }

@@ -9,30 +9,27 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material3.Scaffold
-import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
-import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.font.FontWeight
-import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import androidx.navigation.NavHostController
 import com.example.jaksaapp.R
 import com.example.jaksaapp.elements.TopNavBar
 import com.example.jaksaapp.ui.theme.BrownNavbar
 import com.example.jaksaapp.ui.theme.LightBrown
 
 @Composable
-fun HomeScreen(isLoggedIn: Boolean) {
+fun HomeScreen(isLoggedIn: Boolean, navHostController: NavHostController) {
     val context = LocalContext.current
 
     Scaffold(
         topBar = {
-            TopNavBar(isLoggedIn)
+            TopNavBar(isLoggedIn, navHostController)
         },
         content = {
             Column(
@@ -52,37 +49,16 @@ fun HomeScreen(isLoggedIn: Boolean) {
                         .border(width = 10.dp, color = BrownNavbar)
                 )
 
-                Text(
-                    text = context.getString(R.string.home_screen_title),
-                    style = TextStyle(
-                        fontSize = 19.sp,
-                        fontWeight = FontWeight.Bold
+                CustomText(text = context.getString(R.string.home_screen_title))
 
-                    ),
-                    color = Color.Black,
-                    modifier = Modifier.padding(20.dp)
-                )
-
-                Text(
+                CustomText(
                     text = context.getString(R.string.home_screen_school_description),
-                    style = TextStyle(
-                        fontSize = 15.sp,
-                        textAlign = TextAlign.Justify
-
-                    ),
-                    color = Color.Black,
-                    modifier = Modifier.padding(20.dp)
+                    fontSize = 15.sp,
+                    fontWeight = FontWeight.Normal
                 )
 
-                Text(
-                    text = context.getString(R.string.home_screen_name),
-                    style = TextStyle(
-                        fontSize = 19.sp,
-                        fontWeight = FontWeight.Bold
-                    ),
-                    color = Color.Black,
-                    modifier = Modifier.padding(20.dp)
-                )
+                CustomText(text = context.getString(R.string.home_screen_name))
+
                 Spacer(modifier = Modifier.weight(1f))
 
                 StatisticSection()

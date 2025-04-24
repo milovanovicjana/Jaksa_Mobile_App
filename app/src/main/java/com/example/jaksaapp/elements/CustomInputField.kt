@@ -21,6 +21,7 @@ fun CustomInputField(
     value: String,
     label: String,
     onValueChange: (String) -> Unit,
+    enabled: Boolean = true,
     trailingIcon: @Composable (() -> Unit) = {},
     modifier: Modifier = Modifier
 ) {
@@ -44,7 +45,8 @@ fun CustomInputField(
             unfocusedBorderColor = BrownNavbar,
             focusedTextColor = BrownNavbar,
             unfocusedTextColor = BrownNavbar
-        )
+        ),
+        enabled = enabled
 
     )
 }

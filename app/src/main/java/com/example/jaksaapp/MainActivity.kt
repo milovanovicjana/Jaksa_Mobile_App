@@ -1,15 +1,19 @@
 package com.example.jaksaapp
 
 import AboutMeScreen
+import ClassRequestsScreen
+import ClassScheduleScreen
 import ContactScreen
 import HomeScreen
 import LogInScreen
+import MyProfileScreen
 import RegistrationScreen
 import android.os.Bundle
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.activity.enableEdgeToEdge
 import androidx.compose.animation.ExperimentalAnimationApi
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
@@ -40,6 +44,9 @@ class MainActivity : ComponentActivity() {
                         AboutMeScreen(isLoggedIn.value, navController)
                     }
                     composable(route = LogInScreen.route) {
+                        LaunchedEffect(Unit) {
+                            isLoggedIn.value = false
+                        }
                         LogInScreen(isLoggedIn.value, navController) { isLoggedIn.value = true }
                     }
                     composable(route = RegistrationScreen.route) {
@@ -47,6 +54,15 @@ class MainActivity : ComponentActivity() {
                     }
                     composable(route = ContactScreen.route) {
                         ContactScreen(isLoggedIn.value, navController)
+                    }
+                    composable(route = MyProfileScreen.route) {
+                        MyProfileScreen(isLoggedIn.value, navController)
+                    }
+                    composable(route = ClassRequestsScreen.route) {
+                        ClassRequestsScreen(isLoggedIn.value, navController)
+                    }
+                    composable(route = ClassScheduleScreen.route) {
+                        ClassScheduleScreen(isLoggedIn.value, navController)
                     }
                 }
             }

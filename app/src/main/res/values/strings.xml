@@ -7,8 +7,8 @@
     <string name="logout">"Odjava"</string>
     <string name="about_me">"O meni"</string>
     <string name="home_page">"Početna"</string>
-    <string name="requests_page">"Zahtevi"</string>
-    <string name="timetable_page">"Raspored casova"</string>
+    <string name="class_requests_page">"Zahtevi"</string>
+    <string name="class_schedule_page">"Raspored casova"</string>
 
     <!--Home screen text-->
     <string name="home_screen_title">"Naučite matematiku sa lakoćom!"</string>

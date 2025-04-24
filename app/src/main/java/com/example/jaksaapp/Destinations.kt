@@ -29,3 +29,18 @@ object ContactScreen : Destination {
     override val label = "ContactScreen"
     override val route = "ContactScreen"
 }
+
+object MyProfileScreen : Destination {
+    override val label = "MyProfileScreen"
+    override val route = "MyProfileScreen"
+}
+
+object ClassScheduleScreen : Destination {
+    override val label = "ClassScheduleScreen"
+    override val route = "ClassScheduleScreen"
+}
+
+object ClassRequestsScreen : Destination {
+    override val label = "ClassRequestsScreen"
+    override val route = "ClassRequestsScreen"
+}

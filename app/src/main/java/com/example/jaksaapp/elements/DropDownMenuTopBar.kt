@@ -11,10 +11,13 @@ import androidx.compose.ui.platform.LocalContext
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.currentBackStackEntryAsState
 import com.example.jaksaapp.AboutMeScreen
+import com.example.jaksaapp.ClassRequestsScreen
+import com.example.jaksaapp.ClassScheduleScreen
 import com.example.jaksaapp.ContactScreen
 import com.example.jaksaapp.Destination
 import com.example.jaksaapp.HomeScreen
 import com.example.jaksaapp.LogInScreen
+import com.example.jaksaapp.MyProfileScreen
 import com.example.jaksaapp.R
 import com.example.jaksaapp.RegistrationScreen
 import com.example.jaksaapp.ui.theme.Cream
@@ -26,8 +29,8 @@ fun DropdownMenuTopBar(expanded: MutableState<Boolean>, isLoggedIn: Boolean, nav
     val currentRoute = currentBackStackEntry?.destination?.route ?: HomeScreen.route
 
     val homePageButtonText = context.getString(R.string.home_page)
-    val requestsButtonText = context.getString(R.string.requests_page)
-    val timetableButtonText = context.getString(R.string.timetable_page)
+    val classRequestsButtonText = context.getString(R.string.class_requests_page)
+    val classScheduleButtonText = context.getString(R.string.class_schedule_page)
     val aboutMeButtonText = context.getString(R.string.about_me)
     val myProfileButtonText = context.getString(R.string.my_profile)
     val logOutButtonText = context.getString(R.string.logout)
@@ -42,19 +45,19 @@ fun DropdownMenuTopBar(expanded: MutableState<Boolean>, isLoggedIn: Boolean, nav
             homePageButtonText,
             aboutMeButtonText,
             contactButtonText,
-            requestsButtonText,
-            timetableButtonText,
+            classRequestsButtonText,
+            classScheduleButtonText,
             myProfileButtonText,
             logOutButtonText
         )
         dropdownItemDestinations = listOf(
+            HomeScreen,
             AboutMeScreen,
-            AboutMeScreen,
-            AboutMeScreen,
-            AboutMeScreen,
-            AboutMeScreen,
-            AboutMeScreen,
-            AboutMeScreen
+            ContactScreen,
+            ClassRequestsScreen,
+            ClassScheduleScreen,
+            MyProfileScreen,
+            LogInScreen
         )
     } else {
         dropdownMenuItems = listOf(homePageButtonText, aboutMeButtonText, contactButtonText, loginButtonText, registrationButtonText)

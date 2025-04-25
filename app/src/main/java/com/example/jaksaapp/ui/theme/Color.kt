@@ -24,3 +24,5 @@ val Chocolate = Color(0xFF3D2B1F)
 val Cream = Color(0xFFEFE4D7)
 val DarkCream = Color(0xFFE3D6C4)
 val BrownButton = Color(0xFFC4A484)
+
+val Red = Color(0xFFF13434)

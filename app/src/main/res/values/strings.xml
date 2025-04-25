@@ -7,7 +7,7 @@
     <string name="logout">"Odjava"</string>
     <string name="about_me">"O meni"</string>
     <string name="home_page">"Početna"</string>
-    <string name="class_requests_page">"Zahtevi"</string>
+    <string name="class_requests_page">"Zahtevi za casove"</string>
     <string name="class_schedule_page">"Raspored casova"</string>
 
     <!--Home screen text-->

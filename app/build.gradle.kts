@@ -51,7 +51,7 @@ dependencies {
     implementation(libs.accompanist.pager.indicators)
 
     // Icons
-    implementation("androidx.compose.material:material-icons-extended:1.3.0-alpha03")
+    implementation(libs.androidx.material.icons.extended)
 
     implementation(libs.androidx.core.ktx)
     implementation(libs.androidx.lifecycle.runtime.ktx)

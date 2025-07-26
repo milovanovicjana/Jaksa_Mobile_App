@@ -29,6 +29,7 @@ class MainActivity : ComponentActivity() {
         enableEdgeToEdge()
         setContent {
 
+
             JaksaAppTheme {
                 val navController = rememberAnimatedNavController()
                 val startRoute by remember { mutableStateOf(LogInScreen.route) }

@@ -1,5 +1,4 @@
 
-import android.util.Log
 import android.widget.Toast
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Column
@@ -125,7 +124,14 @@ fun RegistrationScreen(isLoggedIn: Boolean, navHostController: NavHostController
                 )
 
                 CustomButton(text = context.getString(R.string.registration_button), onClick = {
-                    val validationMessage: String = authViewModel.validateFields(firstname, lastname, email, phone, username, password)
+                    val validationMessage: String = authViewModel.validateRegistrationFields(
+                        firstname,
+                        lastname,
+                        email,
+                        phone,
+                        username,
+                        password
+                    )
 
                     if (validationMessage.isEmpty()) {
                         val request = RegisterRequest(
@@ -146,7 +152,6 @@ fun RegistrationScreen(isLoggedIn: Boolean, navHostController: NavHostController
                 LaunchedEffect(registrationResult) {
                     registrationResult?.let {
                         Toast.makeText(context, it, Toast.LENGTH_LONG).show()
-                        Log.d("aaa", it)
                         if (it.contains("Uspesna", ignoreCase = true)) {
                             navHostController.navigate(com.example.jaksaapp.LogInScreen.route) {
                                 popUpTo(0)

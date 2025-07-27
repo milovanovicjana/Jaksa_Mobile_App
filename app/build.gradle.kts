@@ -76,4 +76,6 @@ dependencies {
     implementation(libs.retrofit)
     implementation(libs.converter.gson)
     implementation(libs.converter.scalars) // Allow receiving plain strings from the backend, not just JSON
+
+    implementation(libs.androidx.datastore.preferences)
 }

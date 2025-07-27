@@ -1,4 +1,5 @@
 
+import android.widget.Toast
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Spacer
@@ -10,6 +11,7 @@ import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material3.Scaffold
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
@@ -21,16 +23,27 @@ import androidx.compose.ui.platform.LocalFocusManager
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavHostController
 import com.example.jaksaapp.R
+import com.example.jaksaapp.TokenManager
+import com.example.jaksaapp.remote.dto.LoginRequest
 import com.example.jaksaapp.ui.theme.BrownNavbar
 import com.example.jaksaapp.ui.theme.Cream
 import com.example.jaksaapp.ui.theme.Green1
 import com.example.jaksaapp.ui.theme.elements.TopNavBar
+import com.example.jaksaapp.viewModels.AuthViewModel
 
 @Composable
-fun LogInScreen(isLoggedIn: Boolean, navHostController: NavHostController, onLoginSuccess: () -> Unit) {
+fun LogInScreen(
+    isLoggedIn: Boolean,
+    navHostController: NavHostController,
+    authViewModel: AuthViewModel = viewModel(),
+    onLoginSuccess: () -> Unit
+) {
     val context = LocalContext.current
+    val loginResult = authViewModel.loginResult
+    val tokenManager = remember { TokenManager(context) }
 
     Scaffold(
         topBar = {
@@ -67,7 +80,7 @@ fun LogInScreen(isLoggedIn: Boolean, navHostController: NavHostController, onLog
                     modifier = Modifier.align(Alignment.CenterHorizontally)
                 )
 
-                var userName by remember { mutableStateOf("") }
+                var username by remember { mutableStateOf("") }
                 var password by remember { mutableStateOf("") }
                 var isPasswordVisible by remember { mutableStateOf(false) }
 
@@ -75,9 +88,9 @@ fun LogInScreen(isLoggedIn: Boolean, navHostController: NavHostController, onLog
 
                 CustomInputField(
                     focusManager,
-                    value = userName,
+                    value = username,
                     label = context.getString(R.string.user_name),
-                    onValueChange = { userName = it },
+                    onValueChange = { username = it },
                     modifier = Modifier.fillMaxWidth()
                 )
                 CustomPasswordInputField(
@@ -91,11 +104,33 @@ fun LogInScreen(isLoggedIn: Boolean, navHostController: NavHostController, onLog
                 )
 
                 CustomButton(text = context.getString(R.string.login_button), onClick = {
-                    onLoginSuccess()
-                    navHostController.navigate(com.example.jaksaapp.HomeScreen.route) {
-                        popUpTo(0)
+                    val validationMessage: String = authViewModel.validateLoginFields(username, password)
+
+                    if (validationMessage.isEmpty()) {
+                        val request = LoginRequest(
+                            username = username,
+                            password = password
+                        )
+                        authViewModel.loginUser(request)
+                    } else {
+                        Toast.makeText(context, validationMessage, Toast.LENGTH_LONG).show()
                     }
                 }, modifier = Modifier.align(Alignment.CenterHorizontally).padding(10.dp))
+
+                LaunchedEffect(loginResult) {
+                    loginResult?.let {
+                        Toast.makeText(context, it, Toast.LENGTH_LONG).show()
+                        if (it.contains("Uspesno", ignoreCase = true)) {
+                            authViewModel.authToken?.let { token ->
+                                tokenManager.saveToken(token)
+                            }
+                            onLoginSuccess()
+                            navHostController.navigate(com.example.jaksaapp.HomeScreen.route) {
+                                popUpTo(0)
+                            }
+                        }
+                    }
+                }
             }
         }
     )

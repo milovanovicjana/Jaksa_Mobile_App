@@ -7,3 +7,7 @@ object ValidationRules {
 
     val phoneRegex = Regex("^[0-9]{6,15}$")
 }
+
+fun validateField(value: String, regex: Regex): String? {
+    return if (!regex.matches(value)) "error" else null
+}

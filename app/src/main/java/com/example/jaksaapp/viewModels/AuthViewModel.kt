@@ -9,6 +9,7 @@ import com.example.jaksaapp.remote.dto.LoginRequest
 import com.example.jaksaapp.remote.dto.RegisterRequest
 import com.example.jaksaapp.repository.AuthRepository
 import com.example.jaksaapp.ui.theme.utils.ValidationRules
+import com.example.jaksaapp.ui.theme.utils.validateField
 import kotlinx.coroutines.launch
 
 class AuthViewModel(private val repository: AuthRepository = AuthRepository()) : ViewModel() {
@@ -20,9 +21,6 @@ class AuthViewModel(private val repository: AuthRepository = AuthRepository()) :
 
     var authToken by mutableStateOf<String?>(null)
 
-    private fun validateField(value: String, regex: Regex): String? {
-        return if (!regex.matches(value)) "error" else null
-    }
     fun validateRegistrationFields(
         firstname: String,
         lastname: String,

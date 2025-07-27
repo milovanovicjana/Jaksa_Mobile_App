@@ -30,6 +30,7 @@ class MainActivity : ComponentActivity() {
         setContent {
 
 
+
             JaksaAppTheme {
                 val navController = rememberAnimatedNavController()
                 val startRoute by remember { mutableStateOf(LogInScreen.route) }

@@ -1,11 +1,14 @@
+import android.util.Log
 import androidx.compose.foundation.background
 import androidx.compose.material3.Divider
 import androidx.compose.material3.DropdownMenu
 import androidx.compose.material3.DropdownMenuItem
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.MutableState
 import androidx.compose.runtime.getValue
+import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
 import androidx.navigation.NavHostController
@@ -20,10 +23,15 @@ import com.example.jaksaapp.LogInScreen
 import com.example.jaksaapp.MyProfileScreen
 import com.example.jaksaapp.R
 import com.example.jaksaapp.RegistrationScreen
+import com.example.jaksaapp.TokenManager
 import com.example.jaksaapp.ui.theme.Cream
+import kotlinx.coroutines.launch
+
 @Composable
 fun DropdownMenuTopBar(expanded: MutableState<Boolean>, isLoggedIn: Boolean, navHostController: NavHostController) {
     val context = LocalContext.current
+    val tokenManager = TokenManager(context)
+    val coroutineScope = rememberCoroutineScope()
 
     val currentBackStackEntry by navHostController.currentBackStackEntryAsState()
     val currentRoute = currentBackStackEntry?.destination?.route ?: HomeScreen.route
@@ -99,10 +107,16 @@ fun DropdownMenuTopBar(expanded: MutableState<Boolean>, isLoggedIn: Boolean, nav
     ) {
         repeat(dropdownMenuItems.size) {
                 index ->
+
             DropdownMenuItem(
                 onClick = {
-                    navHostController.navigate(dropdownItemDestinations[index].route) {
-                        popUpTo(0)
+                    coroutineScope.launch {
+                        if (dropdownMenuItems[index] == "Odjava") {
+                            tokenManager.clearToken()
+                        }
+                        navHostController.navigate(dropdownItemDestinations[index].route) {
+                            popUpTo(0)
+                        }
                     }
                 },
                 text = { Text(dropdownMenuItems[index]) },

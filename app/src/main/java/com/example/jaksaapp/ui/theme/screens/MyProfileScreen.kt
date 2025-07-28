@@ -49,7 +49,6 @@ fun MyProfileScreen(isLoggedIn: Boolean, navHostController: NavHostController, u
     var email by remember { mutableStateOf("") }
     var phone by remember { mutableStateOf("") }
     var username by remember { mutableStateOf("") }
-    var password by remember { mutableStateOf("") }
 
     LaunchedEffect(Unit) {
         val token = tokenManager.getToken()
@@ -64,7 +63,6 @@ fun MyProfileScreen(isLoggedIn: Boolean, navHostController: NavHostController, u
             email = user.email
             phone = user.phone
             username = user.username
-            password = user.username
         }
     }
 
@@ -100,8 +98,6 @@ fun MyProfileScreen(isLoggedIn: Boolean, navHostController: NavHostController, u
                 var isNameFieldEnabled by remember { mutableStateOf(false) }
                 var isSurnameFieldEnabled by remember { mutableStateOf(false) }
                 var isPhoneFieldEnabled by remember { mutableStateOf(false) }
-
-                var isPasswordFieldEnabled by remember { mutableStateOf(false) }
 
                 CustomInputField(
                     focusManager,
@@ -240,22 +236,12 @@ fun MyProfileScreen(isLoggedIn: Boolean, navHostController: NavHostController, u
                     modifier = Modifier.fillMaxWidth()
                 )
 
-                CustomInputField(
-                    focusManager,
-                    value = password,
-                    trailingIcon = {
-                        IconButton(onClick = { isPasswordFieldEnabled = !isPasswordFieldEnabled }) {
-                            Icon(
-                                imageVector = if (isPasswordFieldEnabled) Icons.Filled.Done else Icons.Filled.Edit,
-                                contentDescription = if (isPasswordFieldEnabled) "Save" else "Edit"
-                            )
-                        }
-                    },
-                    enabled = isPasswordFieldEnabled,
-                    label = context.getString(R.string.password),
-                    onValueChange = { password = it },
-                    modifier = Modifier.fillMaxWidth()
-                )
+                CustomButton(text = context.getString(R.string.change_password), onClick = {
+
+                    navHostController.navigate(com.example.jaksaapp.ChangePasswordScreen.route) {
+                        popUpTo(0)
+                    }
+                }, modifier = Modifier.align(Alignment.CenterHorizontally).padding(10.dp))
 
                 LaunchedEffect(updateFieldsResult) {
                     updateFieldsResult?.let {

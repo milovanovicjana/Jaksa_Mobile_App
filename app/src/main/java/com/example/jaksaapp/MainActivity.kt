@@ -18,6 +18,7 @@ import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import com.example.jaksaapp.ui.theme.JaksaAppTheme
+import com.example.jaksaapp.ui.theme.screens.ChangePasswordScreen
 import com.google.accompanist.navigation.animation.AnimatedNavHost
 import com.google.accompanist.navigation.animation.composable
 import com.google.accompanist.navigation.animation.rememberAnimatedNavController
@@ -63,6 +64,9 @@ class MainActivity : ComponentActivity() {
                     }
                     composable(route = ClassScheduleScreen.route) {
                         ClassScheduleScreen(isLoggedIn.value, navController)
+                    }
+                    composable(route = ChangePasswordScreen.route) {
+                        ChangePasswordScreen(isLoggedIn.value, navController)
                     }
                 }
             }

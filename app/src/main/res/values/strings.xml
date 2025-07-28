@@ -51,12 +51,22 @@
     <!--Registration text-->
     <string name="registration_button">"Registruj se"</string>
 
-    <!--MyProdile text-->
+    <!--MyProfile text-->
     <string name="name_example">"Ana"</string>
     <string name="surname_example">"Vukasinovic"</string>
     <string name="username_example">"anav123</string>
     <string name="password_example">"xxxx"</string>
     <string name="phone_number_example">"0651414141"</string>
     <string name="email_example">"anav@gmail.com"</string>
+
+
+    <!--Change password-->
+    <string name="change_password_screen">"Promena lozinke"</string>
+    <string name="change_password">"Promeni lozinku"</string>
+    <string name="old_password">"Stara lozinka"</string>
+    <string name="new_password">"Nova lozinka"</string>
+    <string name="repeated_password">"Ponovljena lozinka"</string>
+    <string name="save_password">"Sacuvaj"</string>
+
 
 </resources>

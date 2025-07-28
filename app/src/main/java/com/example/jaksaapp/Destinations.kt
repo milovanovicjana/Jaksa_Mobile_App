@@ -44,3 +44,8 @@ object ClassRequestsScreen : Destination {
     override val label = "ClassRequestsScreen"
     override val route = "ClassRequestsScreen"
 }
+
+object ChangePasswordScreen : Destination {
+    override val label = "ChangePasswordScreen"
+    override val route = "ChangePasswordScreen"
+}

@@ -6,6 +6,7 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.setValue
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.example.jaksaapp.remote.dto.ChangePasswordRequest
 import com.example.jaksaapp.remote.dto.UserDto
 import com.example.jaksaapp.repository.UserRepository
 import com.example.jaksaapp.ui.theme.utils.ValidationRules
@@ -17,6 +18,9 @@ class UserViewModel(private val repository: UserRepository = UserRepository()) :
     var loggedInUser by mutableStateOf<UserDto?>(null)
         private set
     var updateFieldsResult by mutableStateOf<String?>(null)
+        private set
+
+    var changePasswordResult by mutableStateOf<String?>(null)
         private set
 
     fun setToken(token: String?) {
@@ -39,16 +43,19 @@ class UserViewModel(private val repository: UserRepository = UserRepository()) :
         }
     }
 
-    fun validateUpdateUserFields(
-        firstname: String,
-        lastname: String,
-        phone: String
+    fun validateChangePasswordFields(
+        oldPassword: String,
+        newPassword: String,
+        repeatedPassword: String
     ): String {
-        if (firstname.isBlank() || lastname.isBlank() || lastname.isBlank()) {
+        if (oldPassword.isBlank() || newPassword.isBlank() || repeatedPassword.isBlank()) {
             return "Polja ne smeju biti prazna!"
         }
-        validateField(phone, ValidationRules.phoneRegex)?.let {
-            return "Broj mora sadržati 6-15 cifara!"
+        validateField(newPassword, ValidationRules.passwordRegex)?.let {
+            return "Nova lozinka mora imati najmanje 6 karaktera, uključujući veliko i malo slovo i jedan broj!!"
+        }
+        if(newPassword!=repeatedPassword){
+            return "Nova i ponovljena lozinka moraju biti iste!"
         }
         return ""
     }
@@ -66,6 +73,36 @@ class UserViewModel(private val repository: UserRepository = UserRepository()) :
                 }
             } catch (e: Exception) {
                 updateFieldsResult = e.localizedMessage
+            }
+        }
+    }
+
+    fun validateUpdateUserFields(
+        firstname: String,
+        lastname: String,
+        phone: String
+    ): String {
+        if (firstname.isBlank() || lastname.isBlank() || lastname.isBlank()) {
+            return "Polja ne smeju biti prazna!"
+        }
+        validateField(phone, ValidationRules.phoneRegex)?.let {
+            return "Broj mora sadržati 6-15 cifara!"
+        }
+        return ""
+    }
+
+    fun changePassword(request: ChangePasswordRequest) {
+        viewModelScope.launch {
+            try {
+                changePasswordResult = null
+                val response = repository.changePassword("Bearer $token", request)
+                if (response.isSuccessful) {
+                    changePasswordResult = "Uspesno sacuvana nova lozinka!"
+                } else {
+                    changePasswordResult = "Greska: ${response.errorBody()?.string()}"
+                }
+            } catch (e: Exception) {
+                changePasswordResult = e.localizedMessage
             }
         }
     }

@@ -1,5 +1,6 @@
 package com.example.jaksaapp.remote
 
+import com.example.jaksaapp.remote.dto.ChangePasswordRequest
 import com.example.jaksaapp.remote.dto.UserDto
 import okhttp3.ResponseBody
 import retrofit2.Response
@@ -14,4 +15,8 @@ interface UserService {
 
     @PUT("/api/user/me")
     suspend fun updateUser(@Header("Authorization") token: String, @Body user: UserDto): Response<ResponseBody>
+
+    @PUT("/api/user/change-password")
+    suspend fun changePassword(@Header("Authorization") token: String, @Body request: ChangePasswordRequest): Response<ResponseBody>
+
 }

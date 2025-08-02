@@ -1,5 +1,6 @@
 
 import android.os.Build
+import android.widget.Toast
 import androidx.annotation.RequiresApi
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Column
@@ -38,6 +39,7 @@ import com.example.jaksaapp.ui.theme.elements.RequestsSelector
 import com.example.jaksaapp.ui.theme.elements.TopNavBar
 import com.example.jaksaapp.viewModels.ClassViewModel
 import com.example.jaksaapp.viewModels.UserViewModel
+import java.time.LocalTime
 
 @RequiresApi(Build.VERSION_CODES.O)
 @Composable
@@ -59,7 +61,7 @@ fun ClassRequestsScreen(
     val isSentTab = selectedTabIndex == 0
     val requestedByStudent = if (isStudent) isSentTab else !isSentTab
 
-    var filteredRequests = classViewModel.classRequests
+    var filteredRequests = classViewModel.allClasses
         .filter { it.requestedByStudent == requestedByStudent }
 
     if (isSentTab) {
@@ -133,11 +135,21 @@ fun ClassRequestsScreen(
                         cl,
                         selectedTabIndex,
                         onAcceptClick = {
-                            classViewModel.acceptRequest(
-                                cl.id!!,
-                                userViewModel.loggedInUser!!.id!!,
-                                userViewModel.loggedInUser!!.role == Role.TEACHER
+                            val isOverloap = classViewModel.checkClassTimeOverlap(
+                                dateParser(cl.date),
+                                LocalTime.parse(cl.timeStart, timeParser),
+                                cl.duration,
+                                classViewModel.allClasses.filter { it.classStatus == ClassStatus.APPROVED }
                             )
+                            if (!isOverloap) {
+                                classViewModel.acceptRequest(
+                                    cl.id!!,
+                                    userViewModel.loggedInUser!!.id!!,
+                                    userViewModel.loggedInUser!!.role == Role.TEACHER
+                                )
+                            } else {
+                                Toast.makeText(context, "Već postoji čas koji se preklapa sa vremenom ovog casa.", Toast.LENGTH_LONG).show()
+                            }
                         },
                         onRejectClick = {
                             classViewModel.rejectRequest(

@@ -104,8 +104,8 @@ fun ClassDialog(
                         { startTime = it },
                         { description = it },
                         { durationOption = it },
-                        {studentId=it},
-                        userViewModel,
+                        { studentId = it },
+                        userViewModel
                     )
                 }
                 else -> {}
@@ -188,7 +188,7 @@ fun ClassDialog(
                             startTime = null
                             description = ""
                             durationOption = "1h"
-                            studentId=0
+                            studentId = 0
 
                             onDialogStateChange(DialogState.INITIAL)
                         } else {

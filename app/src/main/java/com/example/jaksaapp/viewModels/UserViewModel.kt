@@ -7,7 +7,6 @@ import androidx.compose.runtime.setValue
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.jaksaapp.remote.dto.ChangePasswordRequest
-import com.example.jaksaapp.remote.dto.ClassDto
 import com.example.jaksaapp.remote.dto.UserDto
 import com.example.jaksaapp.repository.UserRepository
 import com.example.jaksaapp.ui.theme.utils.ValidationRules

@@ -25,7 +25,7 @@ class ClassViewModel(private val repository: ClassRepository = ClassRepository()
     var classesForMonth by mutableStateOf<List<ClassDto>>(emptyList())
         private set
 
-    var classRequests by mutableStateOf<List<ClassDto>>(emptyList())
+    var allClasses by mutableStateOf<List<ClassDto>>(emptyList())
         private set
 
     var errorMessage by mutableStateOf<String?>(null)
@@ -58,7 +58,8 @@ class ClassViewModel(private val repository: ClassRepository = ClassRepository()
     fun checkClassTimeOverlap(
         selectedDate: Date,
         startTime: LocalTime,
-        durationOption: String
+        durationOption: String,
+        classes: List<ClassDto>
     ): Boolean {
         val localDate = selectedDate.toInstant().atZone(ZoneId.systemDefault()).toLocalDate()
 
@@ -66,7 +67,7 @@ class ClassViewModel(private val repository: ClassRepository = ClassRepository()
         val newClassStart = LocalDateTime.of(localDate, startTime)
         val newClassEnd = newClassStart.plusMinutes(durationInMinutes)
 
-        for (existingClass in classesForMonth) {
+        for (existingClass in classes) {
             val existingDate = LocalDate.parse(existingClass.date, dateFormatter)
 
             if (existingDate == localDate) {
@@ -92,11 +93,11 @@ class ClassViewModel(private val repository: ClassRepository = ClassRepository()
         description: String,
         studentId: Long
     ): String {
-        if (selectedDate == null || startTime == null || durationOption.isEmpty() || description.isEmpty() || studentId.toInt() ==0) {
+        if (selectedDate == null || startTime == null || durationOption.isEmpty() || description.isEmpty() || studentId.toInt() == 0) {
             return "Polja ne smeju biti prazna!"
         }
 
-        if (checkClassTimeOverlap(selectedDate, startTime, durationOption)) {
+        if (checkClassTimeOverlap(selectedDate, startTime, durationOption, classesForMonth)) {
             return "Već postoji čas koji se preklapa sa unetim vremenom."
         }
         return ""
@@ -124,7 +125,7 @@ class ClassViewModel(private val repository: ClassRepository = ClassRepository()
             try {
                 val response = repository.getAllClassesForStudent("Bearer $token", studentId)
                 if (response.isSuccessful) {
-                    classRequests = response.body() ?: emptyList()
+                    allClasses = response.body() ?: emptyList()
                     errorMessage = null
                 } else {
                     errorMessage = "Greška: $response"
@@ -140,7 +141,7 @@ class ClassViewModel(private val repository: ClassRepository = ClassRepository()
             try {
                 val response = repository.getAllClasses("Bearer $token")
                 if (response.isSuccessful) {
-                    classRequests = response.body() ?: emptyList()
+                    allClasses = response.body() ?: emptyList()
                     errorMessage = null
                 } else {
                     errorMessage = "Greška: ${response.errorBody()?.string()}"
@@ -154,11 +155,9 @@ class ClassViewModel(private val repository: ClassRepository = ClassRepository()
     fun acceptRequest(classId: Long, studentId: Long, isTeacher: Boolean) {
         viewModelScope.launch {
             try {
-                // treba dodati proveru da li moze da se prihvati, da li nema preklapanja
                 val response = repository.acceptRequest("Bearer $token", classId)
                 if (response.isSuccessful) {
                     errorMessage = null
-                    getClassesForUser(studentId)
                     if (isTeacher) {
                         getAllClasses()
                     } else {

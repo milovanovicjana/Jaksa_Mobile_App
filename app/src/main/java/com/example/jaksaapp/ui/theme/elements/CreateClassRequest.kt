@@ -44,7 +44,7 @@ fun CreateClassRequest(
     startTime: LocalTime?,
     description: String,
     durationOption: String,
-    studentId:Long,
+    studentId: Long,
     onStartTimeChange: (LocalTime?) -> Unit,
     onDescriptionChange: (String) -> Unit,
     onDurationChange: (String) -> Unit,
@@ -145,12 +145,12 @@ fun CreateClassRequest(
 
         Spacer(modifier = Modifier.height(12.dp))
 
-        if(userViewModel.loggedInUser!!.role==Role.TEACHER){
+        if (userViewModel.loggedInUser!!.role == Role.TEACHER) {
             DropdownMenu(
                 label = "Ucenik:",
                 options = userViewModel.allStudents,
                 selectedOption = studentId,
-                onOptionSelected = {onStudentChange(it) },
+                onOptionSelected = { onStudentChange(it) },
                 modifier = Modifier.fillMaxWidth()
             )
         }

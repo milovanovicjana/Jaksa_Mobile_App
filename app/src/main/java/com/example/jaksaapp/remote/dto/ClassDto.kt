@@ -6,12 +6,13 @@ enum class ClassStatus {
     PENDING
 }
 data class ClassDto(
+    val studentId: Long,
+    val studentFirstName: String,
+    val studentLastName: String,
     var date: String,
     var timeStart: String,
     var duration: String,
-    var description: String,
     var classStatus: ClassStatus,
-    val studentId: Long,
-    val studentFirstName: String,
-    val studentLastName: String
+    var description: String,
+    var requestedByStudent:Boolean
 )

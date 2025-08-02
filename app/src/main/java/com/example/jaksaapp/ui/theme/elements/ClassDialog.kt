@@ -20,6 +20,7 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.example.jaksaapp.remote.dto.ClassRequest
+import com.example.jaksaapp.remote.dto.Role
 import com.example.jaksaapp.ui.theme.BrownNavbar
 import com.example.jaksaapp.ui.theme.Chocolate
 import com.example.jaksaapp.ui.theme.Cream
@@ -170,7 +171,8 @@ fun ClassDialog(
                                 timeStart = startString,
                                 duration = durationOption,
                                 description = description,
-                                studentId = userViewModel.loggedInUser!!.id ?: 1
+                                studentId = userViewModel.loggedInUser!!.id ?: 1,
+                                requestedByStudent = userViewModel.loggedInUser!!.role==Role.STUDENT
                             )
 
                             classViewModel.createClassRequest(

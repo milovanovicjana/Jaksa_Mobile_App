@@ -16,8 +16,10 @@ import androidx.compose.material3.RadioButtonDefaults
 import androidx.compose.material3.Text
 import androidx.compose.material3.TextButton
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
@@ -25,9 +27,11 @@ import androidx.compose.ui.platform.LocalFocusManager
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import com.example.jaksaapp.remote.dto.Role
 import com.example.jaksaapp.ui.theme.BrownNavbar
 import com.example.jaksaapp.ui.theme.Chocolate
 import com.example.jaksaapp.ui.theme.LightBrown
+import com.example.jaksaapp.viewModels.UserViewModel
 import formatToDateStringDisplay
 import timeFormatter
 import java.time.LocalTime
@@ -40,9 +44,12 @@ fun CreateClassRequest(
     startTime: LocalTime?,
     description: String,
     durationOption: String,
+    studentId:Long,
     onStartTimeChange: (LocalTime?) -> Unit,
     onDescriptionChange: (String) -> Unit,
-    onDurationChange: (String) -> Unit
+    onDurationChange: (String) -> Unit,
+    onStudentChange: (Long) -> Unit,
+    userViewModel: UserViewModel
 ) {
     val context = LocalContext.current
 
@@ -135,5 +142,17 @@ fun CreateClassRequest(
             onValueChange = onDescriptionChange,
             modifier = Modifier.fillMaxWidth()
         )
+
+        Spacer(modifier = Modifier.height(12.dp))
+
+        if(userViewModel.loggedInUser!!.role==Role.TEACHER){
+            DropdownMenu(
+                label = "Ucenik:",
+                options = userViewModel.allStudents,
+                selectedOption = studentId,
+                onOptionSelected = {onStudentChange(it) },
+                modifier = Modifier.fillMaxWidth()
+            )
+        }
     }
 }

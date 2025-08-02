@@ -67,6 +67,7 @@ fun ClassScheduleScreen(
         val token = tokenManager.getToken()
         userViewModel.setToken(token)
         userViewModel.getLoggedInUser()
+        userViewModel.getAllStudents()
         classViewModel.setToken(token)
         classViewModel.getClassesForMonth(ClassesByMonthRequest(getYear(currentDate), getMonth(currentDate)))
     }

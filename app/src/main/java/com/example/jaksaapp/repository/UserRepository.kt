@@ -20,4 +20,8 @@ class UserRepository {
     suspend fun changePassword(@Header("Authorization") token: String, @Body request: ChangePasswordRequest): Response<ResponseBody> {
         return ApiClient.userService.changePassword(token, request)
     }
+
+    suspend fun getAllStudents(@Header("Authorization") token: String): Response<List<UserDto>> {
+        return ApiClient.userService.getAllStudents(token)
+    }
 }

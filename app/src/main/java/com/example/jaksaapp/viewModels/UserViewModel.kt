@@ -7,6 +7,7 @@ import androidx.compose.runtime.setValue
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.jaksaapp.remote.dto.ChangePasswordRequest
+import com.example.jaksaapp.remote.dto.ClassDto
 import com.example.jaksaapp.remote.dto.UserDto
 import com.example.jaksaapp.repository.UserRepository
 import com.example.jaksaapp.ui.theme.utils.ValidationRules
@@ -27,6 +28,9 @@ class UserViewModel(private val repository: UserRepository = UserRepository()) :
         private set
 
     var changePasswordResult by mutableStateOf<String?>(null)
+        private set
+
+    var allStudents by mutableStateOf<List<UserDto>>(emptyList())
         private set
 
     fun setToken(token: String?) {
@@ -110,6 +114,22 @@ class UserViewModel(private val repository: UserRepository = UserRepository()) :
                 }
             } catch (e: Exception) {
                 changePasswordResult = e.localizedMessage
+            }
+        }
+    }
+
+    fun getAllStudents() {
+        viewModelScope.launch {
+            try {
+                val response = repository.getAllStudents("Bearer $token")
+                if (response.isSuccessful) {
+                    allStudents = response.body() ?: emptyList()
+                    Log.d("UserViewModel", "Svi ucenici dohvaceni.")
+                } else {
+                    Log.d("UserViewModel", "Greska u dohvatanju ucenika: ${response.code()}")
+                }
+            } catch (e: Exception) {
+                Log.d("UserViewModel", "Izuzetak: ${e.localizedMessage}")
             }
         }
     }

@@ -18,4 +18,7 @@ interface UserService {
 
     @PUT("/api/user/change-password")
     suspend fun changePassword(@Header("Authorization") token: String, @Body request: ChangePasswordRequest): Response<ResponseBody>
+
+    @GET("/api/user/allStudents")
+    suspend fun getAllStudents(@Header("Authorization") token: String): Response<List<UserDto>>
 }

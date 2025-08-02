@@ -89,9 +89,10 @@ class ClassViewModel(private val repository: ClassRepository = ClassRepository()
         selectedDate: Date?,
         startTime: LocalTime?,
         durationOption: String,
-        description: String
+        description: String,
+        studentId: Long
     ): String {
-        if (selectedDate == null || startTime == null || durationOption.isEmpty() || description.isEmpty()) {
+        if (selectedDate == null || startTime == null || durationOption.isEmpty() || description.isEmpty() || studentId.toInt() ==0) {
             return "Polja ne smeju biti prazna!"
         }
 

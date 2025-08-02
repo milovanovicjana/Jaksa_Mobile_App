@@ -46,6 +46,7 @@ fun ClassDialog(
     var startTime by remember { mutableStateOf<LocalTime?>(null) }
     var description by remember { mutableStateOf("") }
     var durationOption by remember { mutableStateOf("1h") }
+    var studentId by remember { mutableStateOf(userViewModel.loggedInUser!!.id ?: 0) }
 
     AlertDialog(
         onDismissRequest = { onDialogStateChange(null) },
@@ -99,9 +100,12 @@ fun ClassDialog(
                         startTime,
                         description,
                         durationOption,
+                        studentId,
                         { startTime = it },
                         { description = it },
-                        { durationOption = it }
+                        { durationOption = it },
+                        {studentId=it},
+                        userViewModel,
                     )
                 }
                 else -> {}
@@ -159,7 +163,8 @@ fun ClassDialog(
                             selectedDate,
                             startTime,
                             durationOption,
-                            description
+                            description,
+                            studentId
                         )
 
                         if (validationMessage.isEmpty()) {
@@ -171,7 +176,7 @@ fun ClassDialog(
                                 timeStart = startString,
                                 duration = durationOption,
                                 description = description,
-                                studentId = userViewModel.loggedInUser!!.id ?: 1,
+                                studentId = studentId,
                                 requestedByStudent = userViewModel.loggedInUser!!.role == Role.STUDENT
                             )
 
@@ -183,6 +188,7 @@ fun ClassDialog(
                             startTime = null
                             description = ""
                             durationOption = "1h"
+                            studentId=0
 
                             onDialogStateChange(DialogState.INITIAL)
                         } else {

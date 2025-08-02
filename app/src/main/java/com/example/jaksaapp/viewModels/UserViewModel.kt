@@ -54,7 +54,7 @@ class UserViewModel(private val repository: UserRepository = UserRepository()) :
         validateField(newPassword, ValidationRules.passwordRegex)?.let {
             return "Nova lozinka mora imati najmanje 6 karaktera, uključujući veliko i malo slovo i jedan broj!!"
         }
-        if(newPassword!=repeatedPassword){
+        if (newPassword != repeatedPassword) {
             return "Nova i ponovljena lozinka moraju biti iste!"
         }
         return ""

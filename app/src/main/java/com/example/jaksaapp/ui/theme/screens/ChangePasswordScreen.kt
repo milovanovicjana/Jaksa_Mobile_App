@@ -31,7 +31,6 @@ import androidx.navigation.NavHostController
 import com.example.jaksaapp.R
 import com.example.jaksaapp.TokenManager
 import com.example.jaksaapp.remote.dto.ChangePasswordRequest
-import com.example.jaksaapp.remote.dto.LoginRequest
 import com.example.jaksaapp.ui.theme.Chocolate
 import com.example.jaksaapp.ui.theme.Cream
 import com.example.jaksaapp.ui.theme.elements.TopNavBar
@@ -118,12 +117,12 @@ fun ChangePasswordScreen(isLoggedIn: Boolean, navHostController: NavHostControll
                 Spacer(modifier = Modifier.height(20.dp))
 
                 CustomButton(text = context.getString(R.string.save_password), onClick = {
-                    val validationMessage: String = userViewModel.validateChangePasswordFields(oldPassword, newPassword,repeatedPassword)
+                    val validationMessage: String = userViewModel.validateChangePasswordFields(oldPassword, newPassword, repeatedPassword)
 
                     if (validationMessage.isEmpty()) {
                         val request = ChangePasswordRequest(
                             currentPassword = oldPassword,
-                             newPassword = newPassword
+                            newPassword = newPassword
                         )
                         userViewModel.changePassword(request)
                     } else {
@@ -136,12 +135,11 @@ fun ChangePasswordScreen(isLoggedIn: Boolean, navHostController: NavHostControll
                         Toast.makeText(context, it, Toast.LENGTH_LONG).show()
                         if (it.contains("Uspesno", ignoreCase = true)) {
                             navHostController.navigate(com.example.jaksaapp.MyProfileScreen.route) {
-                                    popUpTo(0)
+                                popUpTo(0)
                             }
                         }
                     }
                 }
-
             }
         }
     )

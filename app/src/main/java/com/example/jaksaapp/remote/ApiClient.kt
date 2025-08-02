@@ -22,4 +22,8 @@ object ApiClient {
     val userService: UserService by lazy {
         retrofit.create(UserService::class.java)
     }
+
+    val classService: ClassService by lazy {
+        retrofit.create(ClassService::class.java)
+    }
 }

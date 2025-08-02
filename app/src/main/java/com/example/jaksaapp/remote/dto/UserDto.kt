@@ -6,5 +6,6 @@ data class UserDto(
     val email: String,
     val phone: String,
     val username: String,
-    val role: Role? = null
+    val role: Role? = null,
+    val id: Long? = null
 )

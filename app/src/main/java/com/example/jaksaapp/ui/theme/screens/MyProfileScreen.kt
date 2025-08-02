@@ -237,7 +237,6 @@ fun MyProfileScreen(isLoggedIn: Boolean, navHostController: NavHostController, u
                 )
 
                 CustomButton(text = context.getString(R.string.change_password), onClick = {
-
                     navHostController.navigate(com.example.jaksaapp.ChangePasswordScreen.route) {
                         popUpTo(0)
                     }

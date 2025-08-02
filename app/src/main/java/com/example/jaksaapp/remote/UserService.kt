@@ -18,5 +18,4 @@ interface UserService {
 
     @PUT("/api/user/change-password")
     suspend fun changePassword(@Header("Authorization") token: String, @Body request: ChangePasswordRequest): Response<ResponseBody>
-
 }

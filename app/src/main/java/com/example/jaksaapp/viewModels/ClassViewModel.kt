@@ -1,0 +1,125 @@
+package com.example.jaksaapp.viewModels
+
+import android.os.Build
+import androidx.annotation.RequiresApi
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.setValue
+import androidx.lifecycle.ViewModel
+import androidx.lifecycle.viewModelScope
+import com.example.jaksaapp.remote.dto.ClassDto
+import com.example.jaksaapp.remote.dto.ClassRequest
+import com.example.jaksaapp.remote.dto.ClassesByMonthRequest
+import com.example.jaksaapp.repository.ClassRepository
+import dateFormatter
+import kotlinx.coroutines.launch
+import dateParser
+import timeParser
+import java.time.LocalDate
+import java.time.LocalDateTime
+import java.time.LocalTime
+import java.time.ZoneId
+import java.time.format.DateTimeFormatter
+import java.util.Date
+
+class ClassViewModel(private val repository: ClassRepository = ClassRepository()) : ViewModel() {
+    private var token: String? = null
+    var classes by mutableStateOf<List<ClassDto>>(emptyList())
+        private set
+    var errorMessage by mutableStateOf<String?>(null)
+        private set
+
+    var requestClassResult by mutableStateOf<String?>(null)
+        private set
+
+    fun setToken(token: String?) {
+        this.token = token
+    }
+
+    fun getClassesForMonth(request: ClassesByMonthRequest) {
+        viewModelScope.launch {
+            try {
+                val response = repository.getClassesByMonth("Bearer $token", request)
+                if (response.isSuccessful) {
+                    classes = response.body() ?: emptyList()
+                    errorMessage = null
+                } else {
+                    errorMessage = "Greska: ${response.errorBody()?.string()}"
+                }
+            } catch (e: Exception) {
+                errorMessage = e.localizedMessage
+            }
+        }
+    }
+
+    @RequiresApi(Build.VERSION_CODES.O)
+    fun checkClassTimeOverlap(
+        selectedDate: Date,
+        startTime: LocalTime,
+        durationOption: String
+    ): Boolean {
+
+        val localDate = selectedDate.toInstant().atZone(ZoneId.systemDefault()).toLocalDate()
+
+        val durationInMinutes = (durationOption.removeSuffix("h").toFloat() * 60).toLong()
+        val newClassStart = LocalDateTime.of(localDate, startTime)
+        val newClassEnd = newClassStart.plusMinutes(durationInMinutes)
+
+        for (existingClass in classes) {
+            val existingDate = LocalDate.parse(existingClass.date, dateFormatter)
+
+            if (existingDate == localDate) {
+                val existingStartTime = LocalTime.parse(existingClass.timeStart, timeParser)
+                val existingDurationMinutes = (existingClass.duration.removeSuffix("h").toFloat() * 60).toLong()
+                val existingStart = LocalDateTime.of(existingDate, existingStartTime)
+                val existingEnd = existingStart.plusMinutes(existingDurationMinutes)
+
+                val overlaps = newClassStart.isBefore(existingEnd) && existingStart.isBefore(newClassEnd)
+                if (overlaps) {
+                    return true
+                }
+            }
+        }
+        return false
+    }
+
+
+    @RequiresApi(Build.VERSION_CODES.O)
+    fun validateAddClassRequestFields(
+        selectedDate: Date?,
+        startTime: LocalTime?,
+        durationOption: String,
+        description: String
+    ): String {
+        if (selectedDate == null || startTime == null || durationOption.isEmpty() || description.isEmpty()) {
+            return "Polja ne smeju biti prazna!"
+        }
+
+        if(checkClassTimeOverlap(selectedDate,startTime,durationOption)){
+            return "Već postoji čas koji se preklapa sa unetim vremenom."
+        }
+        return ""
+    }
+
+    @RequiresApi(Build.VERSION_CODES.O)
+    fun createClassRequest(request: ClassRequest) {
+        viewModelScope.launch {
+            try {
+                requestClassResult = null
+                val response = repository.createClassRequest("Bearer $token", request)
+                if (response.isSuccessful) {
+                    requestClassResult = "Uspesno poslat zahtev za cas!"
+                } else {
+                    requestClassResult = "Greska: ${response.errorBody()?.string()}"
+                }
+            } catch (e: Exception) {
+                requestClassResult = e.localizedMessage
+            }
+        }
+    }
+
+
+
+
+
+}

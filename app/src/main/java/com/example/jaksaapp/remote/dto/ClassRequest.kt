@@ -6,5 +6,5 @@ data class ClassRequest(
     val timeStart: String,
     val duration: String,
     val description: String,
-    var requestedByStudent:Boolean
+    var requestedByStudent: Boolean
 )

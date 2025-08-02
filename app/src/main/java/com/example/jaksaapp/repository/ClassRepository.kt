@@ -16,4 +16,18 @@ class ClassRepository {
     suspend fun createClassRequest(@Header("Authorization") token: String, @Body request: ClassRequest): Response<String> {
         return ApiClient.classService.createClassRequest(token, request)
     }
+
+    suspend fun getAllClassesForStudent(token: String, studentId: Long): Response<List<ClassDto>> {
+        return ApiClient.classService.getAllClassesForStudent(token, studentId)
+    }
+    suspend fun getAllClasses(token: String): Response<List<ClassDto>> {
+        return ApiClient.classService.getAllClasses(token)
+    }
+    suspend fun acceptRequest(token: String, classId: Long): Response<String> {
+        return ApiClient.classService.acceptRequest(token, classId)
+    }
+
+    suspend fun rejectRequest(token: String, classId: Long): Response<String> {
+        return ApiClient.classService.rejectRequest(token, classId)
+    }
 }

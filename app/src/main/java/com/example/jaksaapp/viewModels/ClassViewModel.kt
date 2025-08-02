@@ -13,19 +13,21 @@ import com.example.jaksaapp.remote.dto.ClassesByMonthRequest
 import com.example.jaksaapp.repository.ClassRepository
 import dateFormatter
 import kotlinx.coroutines.launch
-import dateParser
 import timeParser
 import java.time.LocalDate
 import java.time.LocalDateTime
 import java.time.LocalTime
 import java.time.ZoneId
-import java.time.format.DateTimeFormatter
 import java.util.Date
 
 class ClassViewModel(private val repository: ClassRepository = ClassRepository()) : ViewModel() {
     private var token: String? = null
-    var classes by mutableStateOf<List<ClassDto>>(emptyList())
+    var classesForMonth by mutableStateOf<List<ClassDto>>(emptyList())
         private set
+
+    var classRequests by mutableStateOf<List<ClassDto>>(emptyList())
+        private set
+
     var errorMessage by mutableStateOf<String?>(null)
         private set
 
@@ -41,7 +43,7 @@ class ClassViewModel(private val repository: ClassRepository = ClassRepository()
             try {
                 val response = repository.getClassesByMonth("Bearer $token", request)
                 if (response.isSuccessful) {
-                    classes = response.body() ?: emptyList()
+                    classesForMonth = response.body() ?: emptyList()
                     errorMessage = null
                 } else {
                     errorMessage = "Greska: ${response.errorBody()?.string()}"
@@ -58,14 +60,13 @@ class ClassViewModel(private val repository: ClassRepository = ClassRepository()
         startTime: LocalTime,
         durationOption: String
     ): Boolean {
-
         val localDate = selectedDate.toInstant().atZone(ZoneId.systemDefault()).toLocalDate()
 
         val durationInMinutes = (durationOption.removeSuffix("h").toFloat() * 60).toLong()
         val newClassStart = LocalDateTime.of(localDate, startTime)
         val newClassEnd = newClassStart.plusMinutes(durationInMinutes)
 
-        for (existingClass in classes) {
+        for (existingClass in classesForMonth) {
             val existingDate = LocalDate.parse(existingClass.date, dateFormatter)
 
             if (existingDate == localDate) {
@@ -83,7 +84,6 @@ class ClassViewModel(private val repository: ClassRepository = ClassRepository()
         return false
     }
 
-
     @RequiresApi(Build.VERSION_CODES.O)
     fun validateAddClassRequestFields(
         selectedDate: Date?,
@@ -95,7 +95,7 @@ class ClassViewModel(private val repository: ClassRepository = ClassRepository()
             return "Polja ne smeju biti prazna!"
         }
 
-        if(checkClassTimeOverlap(selectedDate,startTime,durationOption)){
+        if (checkClassTimeOverlap(selectedDate, startTime, durationOption)) {
             return "Već postoji čas koji se preklapa sa unetim vremenom."
         }
         return ""
@@ -118,8 +118,78 @@ class ClassViewModel(private val repository: ClassRepository = ClassRepository()
         }
     }
 
+    fun getClassesForUser(studentId: Long) {
+        viewModelScope.launch {
+            try {
+                val response = repository.getAllClassesForStudent("Bearer $token", studentId)
+                if (response.isSuccessful) {
+                    classRequests = response.body() ?: emptyList()
+                    errorMessage = null
+                } else {
+                    errorMessage = "Greška: $response"
+                }
+            } catch (e: Exception) {
+                errorMessage = e.localizedMessage
+            }
+        }
+    }
 
+    fun getAllClasses() {
+        viewModelScope.launch {
+            try {
+                val response = repository.getAllClasses("Bearer $token")
+                if (response.isSuccessful) {
+                    classRequests = response.body() ?: emptyList()
+                    errorMessage = null
+                } else {
+                    errorMessage = "Greška: ${response.errorBody()?.string()}"
+                }
+            } catch (e: Exception) {
+                errorMessage = e.localizedMessage
+            }
+        }
+    }
 
+    fun acceptRequest(classId: Long, studentId: Long, isTeacher: Boolean) {
+        viewModelScope.launch {
+            try {
+                // treba dodati proveru da li moze da se prihvati, da li nema preklapanja
+                val response = repository.acceptRequest("Bearer $token", classId)
+                if (response.isSuccessful) {
+                    errorMessage = null
+                    getClassesForUser(studentId)
+                    if (isTeacher) {
+                        getAllClasses()
+                    } else {
+                        getClassesForUser(studentId)
+                    }
+                } else {
+                    errorMessage = "Greška: ${response.errorBody()?.string()}"
+                }
+            } catch (e: Exception) {
+                errorMessage = e.localizedMessage
+            }
+        }
+    }
 
+    fun rejectRequest(classId: Long, studentId: Long, isTeacher: Boolean) {
+        viewModelScope.launch {
+            try {
+                val response = repository.rejectRequest("Bearer $token", classId)
 
+                if (response.isSuccessful) {
+                    errorMessage = null
+                    if (isTeacher) {
+                        getAllClasses()
+                    } else {
+                        getClassesForUser(studentId)
+                    }
+                } else {
+                    errorMessage = "Greška: ${response.errorBody()?.string()}"
+                }
+            } catch (e: Exception) {
+                errorMessage = e.localizedMessage
+            }
+        }
+    }
 }

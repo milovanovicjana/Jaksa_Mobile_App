@@ -1,7 +1,8 @@
 
+import android.os.Build
+import androidx.annotation.RequiresApi
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
@@ -9,34 +10,79 @@ import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.verticalScroll
-import androidx.compose.material.Divider
-import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.filled.Cancel
-import androidx.compose.material.icons.filled.Done
-import androidx.compose.material.icons.filled.Info
-import androidx.compose.material3.Icon
 import androidx.compose.material3.Scaffold
-import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.text.font.FontWeight
+import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavHostController
 import com.example.jaksaapp.R
-import com.example.jaksaapp.dataClasses.ClassRequest
+import com.example.jaksaapp.TokenManager
+import com.example.jaksaapp.remote.dto.ClassStatus
+import com.example.jaksaapp.remote.dto.Role
 import com.example.jaksaapp.ui.theme.BrownNavbar
 import com.example.jaksaapp.ui.theme.Cream
-import com.example.jaksaapp.ui.theme.Green2
-import com.example.jaksaapp.ui.theme.Red
+import com.example.jaksaapp.ui.theme.elements.ClassCard
+import com.example.jaksaapp.ui.theme.elements.RequestFilters
+import com.example.jaksaapp.ui.theme.elements.RequestsSelector
 import com.example.jaksaapp.ui.theme.elements.TopNavBar
+import com.example.jaksaapp.viewModels.ClassViewModel
+import com.example.jaksaapp.viewModels.UserViewModel
 
+@RequiresApi(Build.VERSION_CODES.O)
 @Composable
-fun ClassRequestsScreen(isLoggedIn: Boolean, navHostController: NavHostController) {
+fun ClassRequestsScreen(
+    isLoggedIn: Boolean,
+    navHostController: NavHostController,
+    classViewModel: ClassViewModel = viewModel(),
+    userViewModel: UserViewModel = viewModel()
+) {
     val context = LocalContext.current
+    val tokenManager = TokenManager(context)
+
+    var selectedTabIndex by remember { mutableStateOf(0) }
+    val titles = listOf("Poslati", "Pristigli")
+    val statuses = listOf(ClassStatus.PENDING, ClassStatus.APPROVED, ClassStatus.REJECTED)
+    var selectedStatus by remember { mutableStateOf(ClassStatus.PENDING) }
+
+    var isStudent by remember { mutableStateOf(false) }
+    val isSentTab = selectedTabIndex == 0
+    val requestedByStudent = if (isStudent) isSentTab else !isSentTab
+
+    var filteredRequests = classViewModel.classRequests
+        .filter { it.requestedByStudent == requestedByStudent }
+
+    if (isSentTab) {
+        filteredRequests = filteredRequests.filter { it.classStatus == selectedStatus }
+    }
+
+    LaunchedEffect(Unit) {
+        val token = tokenManager.getToken()
+        classViewModel.setToken(token)
+        userViewModel.setToken(token)
+        userViewModel.getLoggedInUser()
+        userViewModel.loggedInUserFlow.collect { user ->
+            if (user != null) {
+                if (user.role == Role.TEACHER) {
+                    classViewModel.getAllClasses()
+                    isStudent = false
+                } else {
+                    isStudent = true
+                    user.id?.let { classViewModel.getClassesForUser(it) }
+                }
+            }
+        }
+    }
 
     Scaffold(
         topBar = {
@@ -62,45 +108,46 @@ fun ClassRequestsScreen(isLoggedIn: Boolean, navHostController: NavHostControlle
                 )
 
                 Spacer(modifier = Modifier.height(20.dp))
-                val requests = listOf(
-                    ClassRequest(
-                        name = "Maja Nikolic",
-                        date = "17.12.2024.",
-                        time = "18:00",
-                        duration = "1.5h"
-                    ),
-                    ClassRequest(
-                        name = "Ana Antic",
-                        date = "22.12.2024.",
-                        time = "19:00",
-                        duration = "1.5h"
-                    ),
-                    ClassRequest(
-                        name = "Jana Milic",
-                        date = "23.12.2024.",
-                        time = "15:00",
-                        duration = "1.5h"
-                    )
-                )
 
-                requests.forEach { request ->
-                    Row(
+                RequestsSelector(selectedTabIndex, { selectedTabIndex = it }, titles)
+                if (selectedTabIndex == 0) {
+                    RequestFilters(statuses, selectedStatus, { selectedStatus = it })
+                }
+                if (filteredRequests.isEmpty()) {
+                    CustomText(
+                        text = "Nema zakazanih časova.",
+                        fontSize = 15.sp,
+                        fontWeight = FontWeight.Bold,
+                        color = BrownNavbar,
+                        textAlign = TextAlign.Center,
                         modifier = Modifier
                             .fillMaxWidth()
-                            .padding(vertical = 8.dp),
-                        verticalAlignment = Alignment.CenterVertically
-                    ) {
-                        Text(request.name, modifier = Modifier.weight(2f))
+                            .padding(top = 32.dp)
+                    )
+                }
+                Spacer(modifier = Modifier.height(10.dp))
 
-                        // Clicking the info button will display the date, time, and duration
-                        Icon(imageVector = Icons.Filled.Info, contentDescription = "", tint = BrownNavbar, modifier = Modifier.weight(1f))
+                filteredRequests.forEach { cl ->
 
-                        Icon(imageVector = Icons.Filled.Done, contentDescription = "", tint = Green2, modifier = Modifier.weight(1f))
-
-                        Icon(imageVector = Icons.Filled.Cancel, contentDescription = "", tint = Red, modifier = Modifier.weight(1f))
-                    }
-
-                    Divider(color = Color.LightGray)
+                    ClassCard(
+                        cl,
+                        selectedTabIndex,
+                        onAcceptClick = {
+                            classViewModel.acceptRequest(
+                                cl.id!!,
+                                userViewModel.loggedInUser!!.id!!,
+                                userViewModel.loggedInUser!!.role == Role.TEACHER
+                            )
+                        },
+                        onRejectClick = {
+                            classViewModel.rejectRequest(
+                                cl.id!!,
+                                userViewModel.loggedInUser!!.id!!,
+                                userViewModel.loggedInUser!!.role == Role.TEACHER
+                            )
+                        }
+                    )
+                    Spacer(modifier = Modifier.height(12.dp))
                 }
             }
         }

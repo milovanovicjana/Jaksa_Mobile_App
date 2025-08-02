@@ -58,8 +58,8 @@ fun ClassScheduleScreen(
     var selectedDate by remember { mutableStateOf<Date?>(null) }
     var dialogState by remember { mutableStateOf<DialogState?>(null) }
     var currentDate by remember { mutableStateOf(getFirstDayOfMonth(Date())) }
-    val calendarDays = remember(currentDate, classViewModel.classes) {
-        generateCalendarDays(currentDate, classViewModel.classes)
+    val calendarDays = remember(currentDate, classViewModel.classesForMonth) {
+        generateCalendarDays(currentDate, classViewModel.classesForMonth)
     }
     val requestClassResult = classViewModel.requestClassResult
 

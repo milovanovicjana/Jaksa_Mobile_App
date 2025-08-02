@@ -26,8 +26,8 @@ import com.example.jaksaapp.ui.theme.Chocolate
 import com.example.jaksaapp.ui.theme.Cream
 import com.example.jaksaapp.viewModels.ClassViewModel
 import com.example.jaksaapp.viewModels.UserViewModel
-import formatToDateStringDisplay
 import formatToDateString
+import formatToDateStringDisplay
 import timeFormatter
 import java.time.LocalTime
 import java.util.Date
@@ -172,7 +172,7 @@ fun ClassDialog(
                                 duration = durationOption,
                                 description = description,
                                 studentId = userViewModel.loggedInUser!!.id ?: 1,
-                                requestedByStudent = userViewModel.loggedInUser!!.role==Role.STUDENT
+                                requestedByStudent = userViewModel.loggedInUser!!.role == Role.STUDENT
                             )
 
                             classViewModel.createClassRequest(

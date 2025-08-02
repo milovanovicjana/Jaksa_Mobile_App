@@ -11,12 +11,18 @@ import com.example.jaksaapp.remote.dto.UserDto
 import com.example.jaksaapp.repository.UserRepository
 import com.example.jaksaapp.ui.theme.utils.ValidationRules
 import com.example.jaksaapp.ui.theme.utils.validateField
+import kotlinx.coroutines.flow.MutableStateFlow
+import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.launch
 
 class UserViewModel(private val repository: UserRepository = UserRepository()) : ViewModel() {
     private var token: String? = null
     var loggedInUser by mutableStateOf<UserDto?>(null)
         private set
+
+    private val _loggedInUser = MutableStateFlow<UserDto?>(null)
+    val loggedInUserFlow: StateFlow<UserDto?> = _loggedInUser
+
     var updateFieldsResult by mutableStateOf<String?>(null)
         private set
 
@@ -32,6 +38,7 @@ class UserViewModel(private val repository: UserRepository = UserRepository()) :
             try {
                 val response = repository.getLoggedInUser("Bearer $token")
                 if (response.isSuccessful) {
+                    _loggedInUser.value = response.body()
                     loggedInUser = response.body()
                     Log.d("UserViewModel", "Ulogovani korisnik dohvacen: ${loggedInUser?.username}")
                 } else {

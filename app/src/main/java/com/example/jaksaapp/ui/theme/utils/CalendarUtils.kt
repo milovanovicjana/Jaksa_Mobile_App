@@ -7,7 +7,6 @@ import java.util.Calendar
 import java.util.Date
 import java.util.Locale
 
-
 @RequiresApi(Build.VERSION_CODES.O)
 val timeFormatter: DateTimeFormatter = DateTimeFormatter.ofPattern("HH:mm")
 
@@ -15,8 +14,7 @@ val timeFormatter: DateTimeFormatter = DateTimeFormatter.ofPattern("HH:mm")
 val timeParser: DateTimeFormatter = DateTimeFormatter.ofPattern("HH:mm:ss")
 
 @RequiresApi(Build.VERSION_CODES.O)
-val dateFormatter: DateTimeFormatter= DateTimeFormatter.ofPattern("yyyy-MM-dd")
-
+val dateFormatter: DateTimeFormatter = DateTimeFormatter.ofPattern("yyyy-MM-dd")
 
 fun Date.formatToMonthString(): String = SimpleDateFormat("MMMM yyyy", Locale.getDefault()).format(this)
 fun Date.formatToDateStringDisplay(): String = SimpleDateFormat("dd.MM.yyyy.", Locale.getDefault()).format(this)
@@ -104,5 +102,3 @@ fun isSameDay(date1: Date, date2: Date): Boolean {
         cal1.get(Calendar.MONTH) == cal2.get(Calendar.MONTH) &&
         cal1.get(Calendar.DAY_OF_MONTH) == cal2.get(Calendar.DAY_OF_MONTH)
 }
-
-

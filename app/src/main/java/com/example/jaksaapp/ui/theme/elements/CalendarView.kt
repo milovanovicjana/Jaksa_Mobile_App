@@ -40,12 +40,14 @@ import com.example.jaksaapp.ui.theme.BrownNavbar
 import com.example.jaksaapp.ui.theme.Chocolate
 import com.example.jaksaapp.ui.theme.Cream
 import com.example.jaksaapp.ui.theme.Green3
+import com.example.jaksaapp.ui.theme.Grey
 import java.util.Date
 
 @Composable
 private fun CalendarCell(
     date: Date,
     signal: Boolean,
+    loggedInUserHasClass: Boolean,
     onClick: () -> Unit,
     modifier: Modifier = Modifier
 ) {
@@ -71,7 +73,7 @@ private fun CalendarCell(
                     .padding(5.dp)
                     .background(
                         shape = CircleShape,
-                        color = Green3.copy(alpha = 0.7f)
+                        color = if (loggedInUserHasClass) Green3.copy(alpha = 0.7f)else Grey.copy(alpha = 0.7f)
                     )
             )
         }
@@ -102,7 +104,7 @@ private fun WeekdayCell(weekday: Int, modifier: Modifier = Modifier) {
 
 @Composable
 private fun CalendarGrid(
-    date: MutableList<Pair<Date, Boolean>>,
+    date: MutableList<Triple<Date, Boolean, Boolean>>,
     onClick: (Date) -> Unit,
     startFromSunday: Boolean,
     modifier: Modifier = Modifier
@@ -118,7 +120,7 @@ private fun CalendarGrid(
             Spacer(modifier = Modifier)
         }
         date.forEach {
-            CalendarCell(date = it.first, signal = it.second, onClick = { onClick(it.first) })
+            CalendarCell(date = it.first, signal = it.second, loggedInUserHasClass = it.third, onClick = { onClick(it.first) })
         }
     }
 }
@@ -179,7 +181,7 @@ private fun CalendarCustomLayout(
 @Composable
 fun CalendarView(
     month: Date,
-    date: MutableList<Pair<Date, Boolean>>?,
+    date: MutableList<Triple<Date, Boolean, Boolean>>?,
     displayNext: Boolean,
     displayPrev: Boolean,
     onClickNext: () -> Unit,

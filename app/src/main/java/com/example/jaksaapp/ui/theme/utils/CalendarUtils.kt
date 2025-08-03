@@ -1,6 +1,7 @@
 import android.os.Build
 import androidx.annotation.RequiresApi
 import com.example.jaksaapp.remote.dto.ClassDto
+import com.example.jaksaapp.remote.dto.Role
 import java.text.SimpleDateFormat
 import java.time.format.DateTimeFormatter
 import java.util.Calendar
@@ -71,13 +72,13 @@ fun getMonth(date: Date): Int {
     return calendar.get(Calendar.MONTH) + 1
 }
 
-fun generateCalendarDays(monthDate: Date, classes: List<ClassDto>): MutableList<Pair<Date, Boolean>> {
+fun generateCalendarDays(monthDate: Date, classes: List<ClassDto>, loggedInUserId: Long?, role: Role?):
+    MutableList<Triple<Date, Boolean, Boolean>> {
     val calendar = Calendar.getInstance().apply {
         time = monthDate
         set(Calendar.DAY_OF_MONTH, 1)
     }
-
-    val days = mutableListOf<Pair<Date, Boolean>>()
+    val days = mutableListOf<Triple<Date, Boolean, Boolean>>()
     val maxDay = calendar.getActualMaximum(Calendar.DAY_OF_MONTH)
 
     for (day in 1..maxDay) {
@@ -89,7 +90,15 @@ fun generateCalendarDays(monthDate: Date, classes: List<ClassDto>): MutableList<
             isSameDay(classDate, date)
         }
 
-        days.add(Pair(date, hasClass))
+        var loggedInUserHasClass = true
+        if (role == Role.STUDENT) {
+            loggedInUserHasClass = classes.any { classDto ->
+                val classDate = dateParser(classDto.date)
+                classDto.studentId == loggedInUserId && isSameDay(classDate, date)
+            }
+        }
+
+        days.add(Triple(date, hasClass, loggedInUserHasClass))
     }
 
     return days

@@ -12,7 +12,7 @@ val Pink40 = Color(0xFF7D5260)
 
 val Green1 = Color(0xFF0B6623)
 val Green2 = Color(0xFF3D7D45)
-val Green3 = Color(0xFF679267)
+val Green3 = Color(0xFF78A978)
 val Green4 = Color(0xFF87A07F)
 val Green5 = Color(0xFFA9BA9D)
 val Green6 = Color(0xFFB8C9AE)
@@ -26,3 +26,5 @@ val DarkCream = Color(0xFFE3D6C4)
 val BrownButton = Color(0xFFC4A484)
 
 val Red = Color(0xFFF13434)
+
+val Grey = Color(0xFF868282)

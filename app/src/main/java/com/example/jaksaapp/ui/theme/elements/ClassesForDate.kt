@@ -13,15 +13,17 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import com.example.jaksaapp.remote.dto.Role
 import com.example.jaksaapp.ui.theme.BrownNavbar
 import com.example.jaksaapp.viewModels.ClassViewModel
+import com.example.jaksaapp.viewModels.UserViewModel
 import dateParser
 import isSameDay
 import java.util.Date
 
 @RequiresApi(Build.VERSION_CODES.O)
 @Composable
-fun ClassesForDate(selectedDate: Date, classViewModel: ClassViewModel) {
+fun ClassesForDate(selectedDate: Date, classViewModel: ClassViewModel, userViewModel: UserViewModel) {
     val classesForDate = classViewModel.classesForMonth.filter {
         isSameDay(dateParser(it.date), selectedDate!!)
     }
@@ -46,7 +48,13 @@ fun ClassesForDate(selectedDate: Date, classViewModel: ClassViewModel) {
                 .padding(horizontal = 16.dp, vertical = 8.dp)
         ) {
             sortedClasses.forEach { cl ->
-                ClassCard(cl, 0, {}, {})
+                ClassCard(cl, 0, {}, {},{
+                    classViewModel.deleteClass(
+                        cl.id!!,
+                        userViewModel.loggedInUser!!.id!!,
+                        userViewModel.loggedInUser!!.role == Role.TEACHER
+                    )
+                },userViewModel.loggedInUser!!.id,userViewModel.loggedInUser!!.role == Role.TEACHER) //dodatu
             }
         }
     }

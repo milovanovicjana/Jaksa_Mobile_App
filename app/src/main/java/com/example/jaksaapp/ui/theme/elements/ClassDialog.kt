@@ -92,7 +92,7 @@ fun ClassDialog(
         text = {
             when (dialogState) {
                 DialogState.VIEW_CLASSES -> {
-                    ClassesForDate(selectedDate, classViewModel)
+                    ClassesForDate(selectedDate, classViewModel,userViewModel)
                 }
                 DialogState.ADD_CLASS -> {
                     CreateClassRequest(

@@ -31,4 +31,8 @@ interface ClassService {
 
     @PUT("api/class/rejectRequest/{classId}")
     suspend fun rejectRequest(@Header("Authorization") token: String, @Path("classId") classId: Long): Response<String>
+
+    @PUT("api/class/deleteClass/{classId}")
+    suspend fun deleteClass(@Header("Authorization") token: String, @Path("classId") classId: Long): Response<String>
+
 }

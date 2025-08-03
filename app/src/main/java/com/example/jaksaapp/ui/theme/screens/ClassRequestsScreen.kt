@@ -157,7 +157,15 @@ fun ClassRequestsScreen(
                                 userViewModel.loggedInUser!!.id!!,
                                 userViewModel.loggedInUser!!.role == Role.TEACHER
                             )
-                        }
+                        },
+                        onDeleteClick = {
+                            classViewModel.deleteClass(
+                                cl.id!!,
+                                userViewModel.loggedInUser!!.id!!,
+                                userViewModel.loggedInUser!!.role == Role.TEACHER
+                            )
+                        },
+                        userViewModel.loggedInUser!!.id,userViewModel.loggedInUser!!.role == Role.TEACHER
                     )
                     Spacer(modifier = Modifier.height(12.dp))
                 }

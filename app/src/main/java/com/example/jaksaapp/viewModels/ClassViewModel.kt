@@ -12,6 +12,9 @@ import com.example.jaksaapp.remote.dto.ClassRequest
 import com.example.jaksaapp.remote.dto.ClassesByMonthRequest
 import com.example.jaksaapp.repository.ClassRepository
 import dateFormatter
+import getFirstDayOfMonth
+import getMonth
+import getYear
 import kotlinx.coroutines.launch
 import timeParser
 import java.time.LocalDate
@@ -179,6 +182,28 @@ class ClassViewModel(private val repository: ClassRepository = ClassRepository()
 
                 if (response.isSuccessful) {
                     errorMessage = null
+                    if (isTeacher) {
+                        getAllClasses()
+                    } else {
+                        getClassesForUser(studentId)
+                    }
+                } else {
+                    errorMessage = "Greška: ${response.errorBody()?.string()}"
+                }
+            } catch (e: Exception) {
+                errorMessage = e.localizedMessage
+            }
+        }
+    }
+
+    fun deleteClass(classId: Long, studentId: Long, isTeacher: Boolean) {
+        viewModelScope.launch {
+            try {
+                val response = repository.deleteClass("Bearer $token", classId)
+                if (response.isSuccessful) {
+                    errorMessage = null
+                    val currentDate=getFirstDayOfMonth(Date())
+                    getClassesForMonth(ClassesByMonthRequest(getYear(currentDate),getMonth(currentDate)))
                     if (isTeacher) {
                         getAllClasses()
                     } else {

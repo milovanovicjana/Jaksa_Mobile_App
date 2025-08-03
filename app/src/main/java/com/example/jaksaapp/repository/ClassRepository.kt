@@ -30,4 +30,8 @@ class ClassRepository {
     suspend fun rejectRequest(token: String, classId: Long): Response<String> {
         return ApiClient.classService.rejectRequest(token, classId)
     }
+
+    suspend fun deleteClass(token: String, classId: Long): Response<String> {
+        return ApiClient.classService.deleteClass(token, classId)
+    }
 }
